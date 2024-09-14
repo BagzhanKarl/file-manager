@@ -30,6 +30,19 @@ if (isset($_POST['delete'])) {
 if (isset($_FILES['file'])) {
     $uploadPath = $currentDirectory . '/' . basename($_FILES['file']['name']);
     move_uploaded_file($_FILES['file']['tmp_name'], $uploadPath);
+
+    // Проверка, если это ZIP файл, пытаемся его распаковать
+    if (mime_content_type($uploadPath) === 'application/zip') {
+        $zip = new ZipArchive;
+        if ($zip->open($uploadPath) === TRUE) {
+            $zip->extractTo($currentDirectory);
+            $zip->close();
+            echo "<div class='alert alert-success'>ZIP файл успешно распакован.</div>";
+            unlink($uploadPath); // Удалить zip файл после распаковки
+        } else {
+            echo "<div class='alert alert-danger'>Ошибка при распаковке ZIP файла.</div>";
+        }
+    }
 }
 
 // Получение списка файлов и папок
