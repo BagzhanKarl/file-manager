@@ -1,6 +1,6 @@
 <?php
 // Определение корневой папки
-$rootDirectory = 'sites/';
+$rootDirectory = '/var/www/sites/';
 $currentDirectory = isset($_GET['dir']) ? $_GET['dir'] : $rootDirectory;
 
 // Проверка на попытку выхода за пределы корневой директории
